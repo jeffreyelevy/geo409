@@ -81,6 +81,113 @@
         map.addLayer(tiles);
         
         // continue JavaScript coding here!
+        var counties = [];
+    console.log(counties);
+    counties[0] = "Adair";
+    console.log(counties); // output is a single item array ["Adair"]
+    counties[1] = "Allen";
+    console.log(counties); // output is now ["Adair", "Allen"]  
+    counties[5] = "Anderson";
+    console.log(counties); // what is this output?  
+        counties[2] = "";
+    console.log(counties); // what is this output?  
+        console.log(counties.length);
+        
+        var cities = ["Frankfurt", "Louisville", "Lexington"];
+    console.log(cities.length);
+    var years = [2010, 2011, 2022, 2013, 2014];
+    var yearsNum = years.length;
+    console.log(yearsNum);
+        
+        console.log("before the for loop");
+for (var i = 0; i < 5; i++) {
+  console.log(i); // outputs numbers from 0 to 4
+}
+console.log("after the for loop");
+        console.log(i);
+        console.log(i);
+        
+        var cities = ["Frankfurt", "Louisville", "Lexington"];
+    for (var i = 0; i < cities.length + 1; i++) {
+        console.log(i); // output the current value of i
+        console.log(cities[i]); // use i to access an index of the Array
+    }
+        
+        var cities = ["Frankfurt", "Louisville", "Lexington"];
+    for (var i = 0; i < cities.length; i++) {
+        console.log(i); // output the current value of i
+        console.log(cities[i]); // use i to access an index of the Array
+    }
+        
+        
+        var newArray = []; // define an empty array
+    for(var i = 0; i < 10; i++) {
+        newArray[i] = i + 1;
+    }
+    console.log(newArray); // output will be [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        
+        
+        var cities = ["Frankfurt", "Louisville", "Lexington"];
+var i = 0;
+while (i < cities.length){  
+    console.log(i);
+    console.log(cities[i]);
+    i++     
+}
+        
+        var iguanaEyes = 1;
+if(iguanaEyes == 2) {
+   console.log('The Iguana has two dreamy eyes.');
+} else {
+   console.log('The Iguana has some number other than two of dreamy eyes.');
+}
+        
+        var iguanaEyes = 1;
+if(iguanaEyes == 2) { // if this condition is met
+   console.log('The Iguana has two dreamy eyes.'); // this statement is executed
+} else if(iguanaEyes == 1) { // otherwise if this condition is met
+   console.log('oh no! The Iguana has lost a dreamy eye.'); // this statement is executed
+} else { // finally, if the previous conditions have not been met, this block statement runs
+   console.log('The Iguana has some number other than two or one dreamy eyes.');
+}
+        
+        var cities = ["Frankfurt", "Louisville", "Lexington"];
+var testCity = "Louisville";
+for (var i = 0; i <= cities.length; i++) {
+    if(cities[i] == testCity) {
+        console.log(testCity + " is found in the city Array!");
+        console.log(i)
+    }
+}
+        console.log(i)
+        
+        var cities = ["Frankfurt", "Louisville", "Lexington"];
+var testCity = "Louisville";
+for (var i = 0; i <= cities.length; i++) {
+    if(cities[i] == testCity) {
+        console.log(testCity + " is found in the city Array at index "+ i+ "!");
+    }
+}
+        var cities = ["Frankfurt", "Louisville", "Lexington"];
+var testCity = "Bowling Green";
+for (var i = 0; i <= cities.length; i++) {
+    if(cities[i] == testCity) {
+        console.log(testCity + " is found in the city Array at index "+ i+ "!");
+    } else {
+        console.log(testCity + " was not found within the Array at index "+ i+ "!");
+    }
+}
+        
+        var years = [2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015];
+for(var i = 0; i <= years.length; i++) {
+  if(years[i] == 2012) {
+    break;
+  } else {
+    console.log(years[i]);
+  }
+}
+        
+        
         
         
     </script>
