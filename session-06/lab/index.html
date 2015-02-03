@@ -82,6 +82,127 @@
         
         // continue JavaScript coding here!
         
+        function helloMap() {
+            console.log("Hello Map");
+        }
+        jackTheIguana();
+        function jackTheIguana() {
+    console.log("Iguanas RULE!!!");
+}
+        
+        helloMap();
+        
+        function saySomething(message) {
+    console.log(message);
+}
+
+saySomething("Hello Map");
+        
+        function saySomething(message) {
+    console.log(message);
+}
+
+saySomething("Hello Map");
+saySomething("My iguana has dreamy eyes.");
+saySomething("Why are these people so obsessed with iguanas?");
+        function calcAreaRect(width,height){
+    var area = width * height;
+    console.log(area);
+}
+        function calcAreaRect(width,height){
+    var area = width * height;
+    console.log(area);
+}
+
+calcAreaRect(40,30);
+        
+        function calcAreaRect(width,height){
+    var area = width * height; // once parameters are in the function, the names do matter
+    console.log(area);
+}
+
+var peanutButter = 40;
+var jelly = 30
+calcAreaRect(peanutButter,jelly);
+        
+        function calcAreaRect(width,height){
+    var area = width * height;
+    return area // statements below a `return` statement in a function will **NOT** be executed
+}
+
+var width = 40;
+var height = 30;
+var calculatedArea = calcAreaRect(width,height);
+console.log(calculatedArea);
+        
+        function calcAreaRect(width,height){
+    var area = width * height;
+    return area; // statements below a `return` statement in a function will **NOT** be executed
+}
+
+var width = 40;
+var height = 30
+var calculatedArea = calcAreaRect(width,height);
+console.log(calculatedArea);
+        
+        function sayThings() {
+
+    console.log("thing 1"); // will output to console
+    console.log("thing 2"); // will output to console
+    return                  // returns an `undefined` value
+    console.log("thing 3"); // will NOT output to console
+}
+
+sayThings(); // calls the function
+        
+        function getMultiValues() {
+    var value1 = 5;
+    var value2 = "iguana";
+    return [value1, value2];
+}
+
+var values = getMultiValues();
+console.log(values[0]); // output is 5
+console.log(values[1]); // output is "iguana"
+        
+        console.log(getMultiValues());
+        
+        function doVegas (){
+    var iguanaGreeting = "Hi, I'm Jack the Iguana.";
+    console.log(iguanaGreeting);
+}
+
+doVegas(); // function call
+        
+//        console.log(iguanaGreeting); // throws an error
+        
+        function doVegas(){
+    var iguanaName = "Jack"; // variable defined within the function scope
+    console.log(iguanaName); // output is Jack
+}
+
+doVegas();
+
+var iguanaName = "Sally"; // variable defined within the global scope
+console.log(iguanaName); // output is Sally
+        
+        var saySomething = function(message) {
+    console.log(message); // output is "Hello Map, Again."
+}
+saySomething("Hello Map, Again.");
+        
+        function outerFunction(message) {
+    console.log(message)
+    var innerFunction = function(message) {
+
+        console.log(message)
+    }
+    innerFunction("I'm inside outerFunction!");
+}
+outerFunction("hi there");
+        
+        
+        
         
     </script>
     
