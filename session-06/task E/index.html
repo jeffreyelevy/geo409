@@ -53,7 +53,7 @@
 <body>
     <header>
         <h1>The Road to Frankfort</h1>
-        <h2>Now with 'hardcoded' densities</h2>
+        <h2>Now with flexible densities! (flenxities)</h2>
     </header>
 
     <div id='map'></div>
@@ -115,7 +115,7 @@
             
         function mapCities(cities, cityCoords, cityPops, cityAreas) { /* include 2 more parameters here */
             
-            var units = 'miles';
+            var units = 'km';
             
             for(var i = 0; i < cities.length; i++) {
 
@@ -138,24 +138,21 @@
         // of the city with these two values and return the result to the caller 
        function calcPopDensity(cityPops, cityAreas, units) {
 //          
+            var tempdensity = [];
            
             if (units=="miles") {
-//                for(var i = 0; i < cityPops.length; i++) {
-                    var density1 = cityPops[0] / cityAreas[0];
-                    var density2 = cityPops[1] / cityAreas[1];
-                    var density3 = cityPops[2] / cityAreas[2];
-            
+                for(var i = 0; i < cityPops.length; i++) {
+                    tempdensity[i] = cityPops[i] / cityAreas[i];
                 }
+            }
             
             if (units=="km") {
                 for(var i = 0; i < cityPops.length; i++) {
-                    var density1 = cityPops[0] / (cityAreas[0] * 2.59);
-                    var density2 = cityPops[1] / (cityAreas[1] * 2.59);
-                    var density3 = cityPops[2] / (cityAreas[2] * 2.59);
+                    tempdensity[i] = cityPops[i] / (cityAreas[i] * 2.59);
                 }
             }
-        console.log (density1, density2, density3, units);
-           return [density1, density2, density3];
+           console.log(tempdensity, units);
+           return tempdensity;
        }
             
         // end writing/editing Task E code here
