@@ -137,13 +137,18 @@
         // population and the area of a single city. The function should calculate the density
         // of the city with these two values and return the result to the caller 
        function calcPopDensity(cityPops, cityAreas, units) {
-//           console.log (cityPops, cityAreas, cityPops.length);
+//          
+           console.log (cityPops, cityAreas, cityPops.length);
             if (units=="miles") {
                 for(var i = 0; i < cityPops.length; i++) {
-                    var density = cityPops[i] / cityAreas[i];
-                    return density;
+                    var density = cityPops[i] / cityAreas[i];                             }
+            }
+            if (units=="km") {
+                for(var i = 0; i < cityPops.length; i++) {
+                    var density = cityPops[i] / (cityAreas[i] * 2.59);
                 }
             }
+           return density;
        }
             
         // end writing/editing Task E code here
