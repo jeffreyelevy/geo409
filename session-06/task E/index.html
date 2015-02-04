@@ -83,44 +83,49 @@
         map.addLayer(tiles);
         
         // begin writing/editing Task E code here
-        
+                
         var lexArea = 285.5;
         // create a second variable for a second city's area here
+        var midwayArea = 1.1;
         // create a third variable for a third city's area here
+        var frankArea = 14.6;
         
-        prepareData(lexArea); // modify function call to pass 2 additional
+        prepareData(lexArea, midwayArea, frankArea); // modify function call to pass 2 additional
                               // arguments
         
-        function prepareData(lexArea) { /* include 2 more parameters here */
+        function prepareData(lexArea, midwayArea, frankArea) { /* include 2 more parameters here */
             
-            var cities = ["Lexington"]; /* include 2nd and 3rd city names */
+            var cities = ["Lexington", "Midway", "Frankfort"]; /* include 2nd and 3rd city names */
             var cityCoords = [
-                [38.0297, -84.4947] 
+                [38.0297, -84.4947], 
                 /* include 2nd city lat/lon here */
+                [38.151086, -84.683965],
                 /* include 3rd city lat/lon here */
+                [38.188332, -84.875190]
                 
             ];
-            var cityPops = [308428]; /* include 2nd and 3rd city pops here */
+            var cityPops = [308428, 1657, 25527]; /* include 2nd and 3rd city pops here */
             
-            var cityAreas = [lexArea]; /* include 2nd and 3rd city areas */
+            var cityAreas = [lexArea, midwayArea, frankArea]; /* include 2nd and 3rd city areas */
                     
-            mapCities(cities, cityCoords); // modify function call to pass 2 additional
+            mapCities(cities, cityCoords, cityPops, cityAreas); // modify function call to pass 2 additional
                                            // arguments
             
         }
             
-        function mapCities(cities, cityCoords) { /* include 2 more parameters here */
+        function mapCities(cities, cityCoords, cityPops, cityAreas) { /* include 2 more parameters here */
             
             var units = 'miles';
             
             for(var i = 0; i < cities.length; i++) {
 
-                /*var density =  call a function named calcPopDensity here, passing
-                                 the city population and area as arguments, and assign
-                                 return value to the "density" variable */
+            var density =  calcPopDensity(cityPops, cityAreas, units);
+                /*call a function named calcPopDensity here, passing
+                the city population and area as arguments, and assign
+                 return value to the "density" variable */
 
                 var popup = "<b>"+cities[i]+"</b><br>"
-                                //+"<b>Density</b>: "+density.toLocaleString()+" people per sq " + units;
+                                +"<b>Density</b>: "+density.toLocaleString()+" people per sq " + units;
 
                 L.marker(cityCoords[i]).addTo(map)
                     .bindPopup(popup);
@@ -131,8 +136,16 @@
         // write a function named calcPopDensity which accepts two arguments from the caller, the  
         // population and the area of a single city. The function should calculate the density
         // of the city with these two values and return the result to the caller 
-        
-
+       function calcPopDensity(cityPops, cityAreas, units) {
+//           console.log (cityPops, cityAreas, cityPops.length);
+            if (units=="miles") {
+                for(var i = 0; i < cityPops.length; i++) {
+                    var density = cityPops[i] / cityAreas[i];
+                    return density;
+                }
+            }
+       }
+            
         // end writing/editing Task E code here
           
     </script>
