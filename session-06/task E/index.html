@@ -125,7 +125,7 @@
                  return value to the "density" variable */
 
                 var popup = "<b>"+cities[i]+"</b><br>"
-                                +"<b>Density</b>: "+density.toLocaleString()+" people per sq " + units;
+                                +"<b>Density</b>: "+density[i].toLocaleString()+" people per sq " + units;
 
                 L.marker(cityCoords[i]).addTo(map)
                     .bindPopup(popup);
@@ -138,17 +138,24 @@
         // of the city with these two values and return the result to the caller 
        function calcPopDensity(cityPops, cityAreas, units) {
 //          
-           console.log (cityPops, cityAreas, cityPops.length);
+           
             if (units=="miles") {
-                for(var i = 0; i < cityPops.length; i++) {
-                    var density = cityPops[i] / cityAreas[i];                             }
-            }
+//                for(var i = 0; i < cityPops.length; i++) {
+                    var density1 = cityPops[0] / cityAreas[0];
+                    var density2 = cityPops[1] / cityAreas[1];
+                    var density3 = cityPops[2] / cityAreas[2];
+            
+                }
+            
             if (units=="km") {
                 for(var i = 0; i < cityPops.length; i++) {
-                    var density = cityPops[i] / (cityAreas[i] * 2.59);
+                    var density1 = cityPops[0] / (cityAreas[0] * 2.59);
+                    var density2 = cityPops[1] / (cityAreas[1] * 2.59);
+                    var density3 = cityPops[2] / (cityAreas[2] * 2.59);
                 }
             }
-           return density;
+        console.log (density1, density2, density3, units);
+           return [density1, density2, density3];
        }
             
         // end writing/editing Task E code here
