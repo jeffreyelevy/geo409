@@ -70,15 +70,38 @@
         var options = {
             center: [38.0489,-84.5025],
             zoom: 13
-        }
+       }
+        
         map = L.map(targetDiv, options);
+        map.on('click', function(e) {
+        console.log(e.latlng);
+    });
+        
+        var center = map.getCenter();
+        console.log(center.lat, center.lng); // returns a LatLng object
+        var zoom = map.getZoom();
+        console.log(zoom); // returns a Number
+        var bounds = map.getBounds();
+//        console.log(bounds); // returns a LatLngBounds object
+        
+        var bounds = map.getBounds(); // returns the LatLngBounds object
+    var bottomLeft = bounds.getSouthWest(); // returns a LatLng object
+    console.log(bottomLeft.lat, bottomLeft.lng); // outputs the lat and lng values
+        
+        
         var tiles = L.tileLayer('http://a{s}.acetate.geoiq.com/tiles/acetate-hillshading/{z}/{x}/{y}.png', {
             attribution: '&copy;2012 Esri & Stamen, Data from OSM and Natural Earth',
             subdomains: '0123',
             minZoom: 2,
             maxZoom: 18
         });
-        map.addLayer(tiles);
+        
+        var OpenStreetMap_Mapnik = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    });
+    map.addLayer(OpenStreetMap_Mapnik);
+        
+//        map.addLayer(tiles);
         
         // continue JavaScript coding here!
         
