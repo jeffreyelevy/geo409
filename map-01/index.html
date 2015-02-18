@@ -196,13 +196,14 @@
         var marker;  // keep this code
         map.on('click', function(e) {  // keep this code
 // uncomment this code after step seven is finished
-            if(map.hasLayer(marker)) {
+            var clicklatlong = (e.latlng);
+            var tooClose = testDistance(clicklatlong);
+            if(map.hasLayer(marker) && tooClose==false) {
 //                console.log ('marker is present.');
                 map.removeLayer(marker);
             }
 
 //              step seven here
-            var clicklatlong = (e.latlng);
             marker = L.marker(clicklatlong);
             marker.addTo(map);
 //            console.log(marker);
@@ -223,10 +224,13 @@
                 if (distance < 2200){
                     layer.setStyle(unsafeDistOptions);
 //                    console.log("You're too close!");
+                    var tooClose = true;
                 }
                 else {
                     layer.setStyle(safeDistOptions);
+                    var tooClose = false;
                 }
+                return tooClose;
             });
         }
         
