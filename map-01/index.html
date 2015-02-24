@@ -197,41 +197,48 @@
         map.on('click', function(e) {  // keep this code
 // uncomment this code after step seven is finished
             var clicklatlong = (e.latlng);
-//            var tooClose = testDistance(clicklatlong);
-            if(map.hasLayer(marker)) {
+            if(map.hasLayer(marker) && marker.keep==false) {
 //                console.log ('marker is present.');
                 map.removeLayer(marker);
             }
 
 //              step seven here
-            marker = L.marker(clicklatlong);
+            marker = L.marker(clicklatlong, {
+            draggable:true
+            });
+            
             marker.addTo(map);
 //            console.log(marker);
                         
 //              step eight here
            testDistance(clicklatlong);
+        
+            marker.on ('drag', function(e){
+            testDistance(marker.getLatLng());
+            });
         });  // keep this code
+        
         
 //        console.log(coords);
         
         function testDistance(clicklatlong2) {
-            
+            var safe = true;
             iguanaGroup.eachLayer(function(layer) {
 //              step 9 here
                 var distance = clicklatlong2.distanceTo(layer.getLatLng())-layer.getRadius();
 //                console.log('distance to camp: '+ distance);
 //              step 10 here
+                
                 if (distance < 2200){
                     layer.setStyle(unsafeDistOptions);
 //                    console.log("You're too close!");
-                    var tooClose = true;
+                    safe = false;
                 }
                 else {
                     layer.setStyle(safeDistOptions);
-                    var tooClose = false;
                 }
-                return tooClose;
             });
+            marker.keep = safe;
         }
         
 // end map1 code
