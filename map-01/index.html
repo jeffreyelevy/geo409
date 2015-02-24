@@ -197,8 +197,8 @@
         map.on('click', function(e) {  // keep this code
 // uncomment this code after step seven is finished
             var clicklatlong = (e.latlng);
-            var tooClose = testDistance(clicklatlong);
-            if(map.hasLayer(marker) && tooClose==false) {
+//            var tooClose = testDistance(clicklatlong);
+            if(map.hasLayer(marker)) {
 //                console.log ('marker is present.');
                 map.removeLayer(marker);
             }
