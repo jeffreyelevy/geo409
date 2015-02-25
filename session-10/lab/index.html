@@ -70,7 +70,7 @@
 
     <script>
         var options = {
-            center: [55.653,30.608],
+            center: [48, -1.0],
             zoom: 5
         }
         var map = L.map('map', options);
@@ -83,8 +83,544 @@
         map.addLayer(tiles);
         
         // Begin writing your practice code here
+var myFeatures = {
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "marker-color": "#7e7e7e",
+        "marker-size": "medium",
+        "marker-symbol": "",
+        "name": "Plaza Mayor, Madrid",
+        "size": 70000
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.7073761224746704,
+          40.415417728111734
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "marker-color": "#7e7e7e",
+        "marker-size": "medium",
+        "marker-symbol": "",
+        "name": "Trinity College, Dublin",
+        "size": 30000
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -6.257271766662597,
+          53.347304250032124
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "marker-color": "#7e7e7e",
+        "marker-size": "medium",
+        "marker-symbol": "",
+        "name": "Red Light District, Amsterdam",
+        "size": 40000
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.897048473358154,
+          52.37261893215566
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -3.6968994140625,
+            40.43649540640561
+          ],
+          [
+            -3.36456298828125,
+            40.50126945841645
+          ],
+          [
+            -3.1915283203125,
+            40.62437645591559
+          ],
+          [
+            -2.82073974609375,
+            40.871987756697415
+          ],
+          [
+            -2.60650634765625,
+            40.98819156349393
+          ],
+          [
+            -2.4609375,
+            41.04000226828485
+          ],
+          [
+            -2.43072509765625,
+            41.135227480564964
+          ],
+          [
+            -2.3236083984375,
+            41.201389699290395
+          ],
+          [
+            -2.16705322265625,
+            41.269549502842565
+          ],
+          [
+            -2.0269775390625,
+            41.31494988250963
+          ],
+          [
+            -1.8182373046875,
+            41.31494988250963
+          ],
+          [
+            -1.658935546875,
+            41.32732632036622
+          ],
+          [
+            -1.483154296875,
+            41.430371882652814
+          ],
+          [
+            -1.175537109375,
+            41.549700145132725
+          ],
+          [
+            -0.8843994140625,
+            41.654445072031244
+          ],
+          [
+            -0.76080322265625,
+            41.638025739250786
+          ],
+          [
+            -0.5877685546875,
+            41.55381099217959
+          ],
+          [
+            -0.43670654296875,
+            41.51886045990478
+          ],
+          [
+            -0.0933837890625,
+            41.52091689636249
+          ],
+          [
+            0.09613037109375,
+            41.51063406062076
+          ],
+          [
+            0.24169921874999997,
+            41.46537017728069
+          ],
+          [
+            0.36529541015625,
+            41.4941781255972
+          ],
+          [
+            0.51361083984375,
+            41.541477666790286
+          ],
+          [
+            0.62896728515625,
+            41.6154423246811
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            0.6317138671874999,
+            41.61338889474735
+          ],
+          [
+            0.79925537109375,
+            41.63597302844412
+          ],
+          [
+            1.13983154296875,
+            41.65649719441145
+          ],
+          [
+            1.318359375,
+            41.67496335351134
+          ],
+          [
+            1.3787841796874998,
+            41.638025739250786
+          ],
+          [
+            1.58203125,
+            41.605174521299304
+          ],
+          [
+            1.7303466796874998,
+            41.59285100004955
+          ],
+          [
+            1.86767578125,
+            41.529141988723104
+          ],
+          [
+            1.99951171875,
+            41.43654942411456
+          ],
+          [
+            2.11761474609375,
+            41.34176252711261
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            2.1478271484375,
+            41.35207214451295
+          ],
+          [
+            2.0379638671875,
+            41.51680395810118
+          ],
+          [
+            1.878662109375,
+            41.62776153144345
+          ],
+          [
+            1.7083740234375,
+            41.87774145109676
+          ],
+          [
+            1.4886474609375,
+            41.983994270935625
+          ],
+          [
+            0.4119873046875,
+            42.220381783720605
+          ],
+          [
+            0.0439453125,
+            42.44778143462245
+          ],
+          [
+            -0.8294677734375,
+            42.589488572714245
+          ],
+          [
+            -1.4337158203125,
+            42.67435857693384
+          ],
+          [
+            -1.768798828125,
+            42.863886280785835
+          ],
+          [
+            -1.8951416015625002,
+            42.98857645832184
+          ],
+          [
+            -1.99951171875,
+            43.12905229628564
+          ],
+          [
+            -2.032470703125,
+            43.30119623257966
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -2.021484375,
+            43.30119623257966
+          ],
+          [
+            -2.2412109375,
+            43.26920624914964
+          ],
+          [
+            -2.4334716796875,
+            43.1811470593997
+          ],
+          [
+            -2.5927734375,
+            43.14909399920127
+          ],
+          [
+            -2.8729248046875,
+            43.24520272203356
+          ],
+          [
+            -2.9718017578125,
+            43.297198404646366
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -3.7072849273681636,
+              40.415456528704595
+            ],
+            [
+              -3.7088298797607417,
+              40.41611000901211
+            ],
+            [
+              -3.7081432342529297,
+              40.41865852156831
+            ],
+            [
+              -3.708486557006836,
+              40.42081487986971
+            ],
+            [
+              -3.7053108215332027,
+              40.42094556603021
+            ],
+            [
+              -3.698616027832031,
+              40.41996541363825
+            ],
+            [
+              -3.6950111389160156,
+              40.41924662614147
+            ],
+            [
+              -3.69363784790039,
+              40.4189199020133
+            ],
+            [
+              -3.6950969696044917,
+              40.415456528704595
+            ],
+            [
+              -3.693122863769531,
+              40.41140480914068
+            ],
+            [
+              -3.6940670013427734,
+              40.40702606373308
+            ],
+            [
+              -3.7023067474365234,
+              40.40526141415211
+            ],
+            [
+              -3.7071990966796875,
+              40.41075128313748
+            ],
+            [
+              -3.70840072631836,
+              40.41133945682595
+            ],
+            [
+              -3.711147308349609,
+              40.41147016139192
+            ],
+            [
+              -3.713293075561524,
+              40.41075128313748
+            ],
+            [
+              -3.7140655517578125,
+              40.41218903196705
+            ],
+            [
+              -3.7138938903808594,
+              40.41369210017261
+            ],
+            [
+              -3.7130355834960938,
+              40.415064437473674
+            ],
+            [
+              -3.7081432342529297,
+              40.41480304205038
+            ],
+            [
+              -3.7072849273681636,
+              40.415456528704595
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}
         
+//        var placesLeaflet = L.geoJson(places).addTo(map);
+        
+//        var placesLeaflet = L.geoJson(places, {
+//            pointToLayer : function(feature, latlng) {
+//            console.log(feature,latlng);
+//            return L.circle(latlng, 40000);
+//            }
+//        }).addTo(map);
+        
+//        var placesLeaflet = L.geoJson(myFeatures, {
+//            pointToLayer : function(feature, latlng) {
+//            return L.circle(latlng, feature.properties.size);
+//            }
+//        }).addTo(map);
+        
+//        var europeFeatures = L.geoJson(myFeatures).addTo(map);
+        
+//         var europeFeatures = L.geoJson(myFeatures, {
+//        onEachFeature: function(feature, layer) {
+////            console.log(feature);
+////            console.log(layer);
+//        }
+//    }).addTo(map);
 
+    var pointOptions = {
+        color: "purple"
+    }
+    var lineOptions = {
+        color: "yellow"  
+    }
+    var polygonOptions = {
+        color: "red"   
+    }
+
+    
+//var europeFeatures = L.geoJson(myFeatures, {
+//        pointToLayer : function(feature, latlng) {
+//            return L.circle(latlng, feature.properties.size);
+//        },
+//        onEachFeature: function(feature, layer) {
+//            console.log(feature.geometry.type);
+//            
+//            if(feature.geometry.type == "Point") {
+//                layer.setStyle(pointOptions);
+//            }
+//            if(feature.geometry.type == "LineString") {
+//                layer.setStyle(lineOptions);
+//            }   
+//            if(feature.geometry.type == "Polygon") {
+//                layer.setStyle(polygonOptions);
+//            }
+//        }
+//    }).addTo(map);
+
+//onEachFeature: function(feature, layer) {
+//        if(feature.geometry.type == "Point") {
+//            layer.setStyle(pointOptions);
+//            layer.bindPopup("I am a "+feature.geometry.type+ " Feature!")
+//        }
+//        if(feature.geometry.type == "LineString") {
+//            layer.setStyle(lineOptions);
+//            layer.bindPopup("I am a "+feature.geometry.type+ " Feature!")
+//        }   
+//        if(feature.geometry.type == "Polygon") {
+//            layer.setStyle(polygonOptions);
+//            layer.bindPopup("I am a "+feature.geometry.type+ " Feature!")
+//        }
+//    }
+//        
+
+    var europeFeatures = L.geoJson(myFeatures, {
+        pointToLayer : function(feature, latlng) {
+            return L.circle(latlng, feature.properties.size);
+        },
+        style : function(feature) {
+            return { dashArray: "5, 10",
+                     weight: 2
+                   }   
+        },
+        onEachFeature: function(feature, layer) {
+            if(feature.geometry.type == "Point") {
+                layer.setStyle(pointOptions);
+                layer.bindPopup("I am a "+feature.geometry.type+ " Feature!")
+            }
+            if(feature.geometry.type == "LineString") {
+                layer.setStyle(lineOptions);
+                layer.bindPopup("I am a "+feature.geometry.type+ " Feature!")
+            }   
+            if(feature.geometry.type == "Polygon") {
+                layer.setStyle(polygonOptions);
+                layer.bindPopup("I am a "+feature.geometry.type+ " Feature!")
+            }
+        }
+    }).addTo(map);    
+        
+        var newPolygon = {
+      "type": "FeatureCollection",
+      "features": [
+        {
+          "type": "Feature",
+          "properties": {},
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  28.125,
+                  58.859223547066584
+                ],
+                [
+                  23.1591796875,
+                  58.44773280389084
+                ],
+                [
+                  21.3134765625,
+                  56.17002298293205
+                ],
+                [
+                  25.6201171875,
+                  56.12106042504407
+                ],
+                [
+                  28.212890625,
+                  57.37393841871411
+                ],
+                [
+                  28.125,
+                  58.859223547066584
+                ]
+              ]
+            ]
+          }
+        }
+      ]
+    }
+        
+         europeFeatures.addData(newPolygon);
+    
     </script>
     
 </body>
