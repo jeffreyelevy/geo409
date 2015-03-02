@@ -52,18 +52,89 @@
 <body>
     <header>
         <!-- add HTML here-->
+        <h1>Power Plants of the Northwest</h1>
+        <h2>Centered on Cooke City, MT</h2>
     </header>
 
         <!-- add HTML here-->
+    <div id='map'></div>
 
     <footer>
         <!-- add HTML here-->
+        <p>Map authored by Jeff Levy</p>
+        <p>The code for this map can be found on <a href="https://github.com/jeffreyelevy/geo409/tree/master/map-02">Github</a>.</p>
+        <p>blah blah blah.</p>
     </footer>
         
         <!-- load external JS file here-->
+    <script src="power-plants-assignment.js"></script>
     <script>
-
+    console.log(plants);
           // add JavaScript here
+    var map = L.map('map', {
+        center: [45.020100, -109.931826],
+        zoom: 6,
+        minZoom: 1,
+        maxZoom: 12
+    });    
+        
+        var tiles = L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', 
+                                         {
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+            subdomains: 'abcd',
+            minZoom: 0,
+            maxZoom: 18
+        });
+        map.addLayer(tiles);
+        
+        
+    plants.features.sort(function(a,b) {
+			return b.properties.capacity - a.properties.capacity;
+		});
+               
+        L.geoJson(plants, {
+            pointToLayer: function(feature,coordinates) {
+                 return L.circleMarker(coordinates, {
+                     color: 'orange',
+                     weight: 1,
+                     fillColor: 'yellow',
+                     fillOpacity: .8,
+                     radius: getRadius(feature.properties.capacity)
+                 });   
+            },
+            filter: function(feature, layer) {
+                if(feature.properties.capacity < 500){
+                    return feature;   
+                }
+            },
+            onEachFeature: function(feature,layer) {
+                var props = feature.properties;
+                var content = "<b>"+props.plant_name+"</b><br>"+
+                    props.capacity.toLocaleString()+" MW<br>";
+                var source = props.source;
+                for(var fuel in source){
+                    content+="<b>"+fuel+"</b>: "+source.toLocaleString()+" MW<br>";
+                }
+                layer.bindPopup(content); 
+                
+                layer.on('mouseover', function() {
+                    layer.setStyle({
+                        fillColor: 'red'
+                    });
+                });
+                layer.on('mouseout', function() {
+                    layer.setStyle({
+                        fillColor: 'yellow'
+                    });
+                });
+            }
+        }).addTo(map);
+        
+      
+        function getRadius(val) {
+            var radius = Math.sqrt(val/Math.PI);
+            return radius * .8;   
+        } 
         
     </script>
     
