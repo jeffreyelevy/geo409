@@ -69,7 +69,7 @@
         <!-- load external JS file here-->
     <script src="power-plants-assignment.js"></script>
     <script>
-    console.log(plants);
+//    console.log(plants);
           // add JavaScript here
     var map = L.map('map', {
         center: [45.020100, -109.931826],
@@ -87,6 +87,9 @@
         });
         map.addLayer(tiles);
         
+    var cookeLatLng = L.latLng(45.020100,-109.931826);
+    var under400 = false;
+    var distance;
         
     plants.features.sort(function(a,b) {
 			return b.properties.capacity - a.properties.capacity;
@@ -102,21 +105,25 @@
                      radius: getRadius(feature.properties.capacity)
                  });   
             },
-            filter: function(feature, layer) {
-                if(feature.properties.capacity < 500){
-                    return feature;   
-                }
-            },
+           
             onEachFeature: function(feature,layer) {
+//                console.log(feature);
+//                console.log(feature.geometry.coordinates[0]);
+                var featureLatLng = L.latLng(feature.geometry.coordinates[1], feature.geometry.coordinates[0]);
+//                console.log('Feature LatLong: '+ featureLngLat +" Cooke LatLong: " +cookeLatLng);
+                distance = cookeLatLng.distanceTo(featureLatLng);
+//                console.log(feature.properties.plant_name +" "+ featureLatLng + "Distance: " +feature.properties.distance);
+//                console.log (feature.properties.distance);
                 var props = feature.properties;
                 var content = "<b>"+props.plant_name+"</b><br>"+
                     props.capacity.toLocaleString()+" MW<br>";
-                var source = props.source;
-                for(var fuel in source){
-                    content+="<b>"+fuel+"</b>: "+source.toLocaleString()+" MW<br>";
+                var source2 = props.source;
+                for(var fuel in source2){
+                    content+="<b>"+fuel+"</b>: "+source2[fuel].toLocaleString()+" MW<br>" +"Distance: "+distance;
+//                    console.log(fuel, source2[fuel]);
                 }
                 layer.bindPopup(content); 
-                
+                                                    
                 layer.on('mouseover', function() {
                     layer.setStyle({
                         fillColor: 'red'
@@ -127,15 +134,25 @@
                         fillColor: 'yellow'
                     });
                 });
+            },
+            filter: function(feature, layer) {
+                
+                if((feature.properties.capacity < 500) && feature.properties.source["Hydro"] || (feature.properties.source["Wind"])){
+                    console.log(distance);
+                    return feature;
+                    }
             }
         }).addTo(map);
         
       
         function getRadius(val) {
             var radius = Math.sqrt(val/Math.PI);
-            return radius * .8;   
+//            return radius;
+            return radius * 2;   
         } 
         
+//        console.log(distance);
+  
     </script>
     
 </body>
