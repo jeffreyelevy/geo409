@@ -90,6 +90,14 @@
     var cookeLatLng = L.latLng(45.020100,-109.931826);
     var under400 = false;
     var distance;
+    var windSrcOptions = {
+        color: 'green',
+        fillColor: 'green'
+    };
+    var hydroSrcOptions = {
+        color: 'blue',
+        fillColor: 'blue'
+    }
         
     plants.features.sort(function(a,b) {
 			return b.properties.capacity - a.properties.capacity;
@@ -109,6 +117,12 @@
             onEachFeature: function(feature,layer) {
 //                console.log(feature);
 //                console.log(feature.geometry.coordinates[0]);
+                if(feature.properties.source["Hydro"]){
+                    layer.setStyle(hydroSrcOptions);
+                }
+                else if(feature.properties.source["Wind"]){
+                    layer.setStyle(windSrcOptions);
+                }
                 var featureLatLng = L.latLng(feature.geometry.coordinates[1], feature.geometry.coordinates[0]);
 //                console.log('Feature LatLong: '+ featureLngLat +" Cooke LatLong: " +cookeLatLng);
                 distance = cookeLatLng.distanceTo(featureLatLng);
@@ -119,7 +133,7 @@
                     props.capacity.toLocaleString()+" MW<br>";
                 var source2 = props.source;
                 for(var fuel in source2){
-                    content+="<b>"+fuel+"</b>: "+source2[fuel].toLocaleString()+" MW<br>" +"Distance: "+distance;
+                    content+="<b>"+fuel+"</b>: "+source2[fuel].toLocaleString()+" MW<br>" +"Distance: "+feature.properties.distance;
 //                    console.log(fuel, source2[fuel]);
                 }
                 layer.bindPopup(content); 
@@ -130,15 +144,21 @@
                     });
                 });
                 layer.on('mouseout', function() {
-                    layer.setStyle({
-                        fillColor: 'yellow'
-                    });
+                    if(feature.properties.source["Hydro"]){
+                        layer.setStyle(hydroSrcOptions);
+                    }
+                    else if(feature.properties.source["Wind"]){
+                        layer.setStyle(windSrcOptions);
+                    }
                 });
             },
             filter: function(feature, layer) {
                 
-                if((feature.properties.capacity < 500) && feature.properties.source["Hydro"] || (feature.properties.source["Wind"])){
-                    console.log(distance);
+                feature.properties.distance = distance;
+//                if (feature.properties.distance < 400000){
+                if((feature.properties.source["Hydro"] < 500) || (feature.properties.source["Wind"] < 500)){
+                    console.log(feature.properties.distance);
+//                    console.log(plants);
                     return feature;
                     }
             }
