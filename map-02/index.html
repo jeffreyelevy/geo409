@@ -105,31 +105,33 @@
         L.geoJson(plants, {
             pointToLayer: function(feature,coordinates) {
                  return L.circleMarker(coordinates, {
-                     color: 'orange',
+//                     color: getColor(feature.properties.source),
                      weight: 1,
-                     fillColor: 'yellow',
-                     fillOpacity: .8,
-                     radius: getRadius(feature.properties.capacity)
+//                     fillColor: getColor(feature.properties.source),
+                     fillOpacity: .7,
+                     stroke: 1,
+                     radius: getRadius(feature.properties.source)
                  });   
             },
            
             onEachFeature: function(feature,layer) {
 //                console.log(feature);
 //                console.log(feature.geometry.coordinates[0]);
-                if(feature.properties.source["Hydro"]){
+                var props = feature.properties;
+                if(props.source["Hydro"]){
                     layer.setStyle(hydroSrcOptions);
                 }
-                else if(feature.properties.source["Wind"]){
+                else if(props.source["Wind"]){
                     layer.setStyle(windSrcOptions);
-                }
-                var props = feature.properties;
+                }                
                 var content = "<b>"+props.plant_name+"</b><br>"+
                     props.capacity.toLocaleString()+" MW<br>";
                 var source2 = props.source;
                 for(var fuel in source2){
-                    content+="<b>"+fuel+"</b>: "+source2[fuel].toLocaleString()+" MW<br>" +"This plant is " + "<b>" +feature.properties.distanceKm.toLocaleString() +  " km"+ "</b>"+" from Cooke City, MT";
+                    content+="<b>"+fuel+"</b>: "+source2[fuel].toLocaleString()+" MW<br>";
 //                    console.log(fuel, source2[fuel]);
                 }
+                content+="This plant is " + "<b>" +props.distanceKm.toLocaleString() +  " km"+ "</b>"+" from Cooke City, MT.";
                 layer.bindPopup(content); 
                                                     
                 layer.on('mouseover', function() {
@@ -138,18 +140,20 @@
                     });
                 });
                 layer.on('mouseout', function() {
-                    if(feature.properties.source["Hydro"]){
+                    if(props.source["Hydro"]){
                         layer.setStyle(hydroSrcOptions);
                     }
-                    else if(feature.properties.source["Wind"]){
+                    else if(props.source["Wind"]){
                         layer.setStyle(windSrcOptions);
                     }
                 });
             },
+            
             filter: function(feature, layer) {
+                var props = feature.properties;
                 var featureLatLng = L.latLng(feature.geometry.coordinates[1], feature.geometry.coordinates[0]);
-                feature.properties.distanceKm =(featureLatLng.distanceTo(cookeLatLng)) /1000;
-                if((feature.properties.distanceKm < 400) && ((feature.properties.source["Hydro"] && feature.properties.source["Hydro"] < 500) || (feature.properties.source["Wind"] && feature.properties.source["Wind"] < 500))){
+                props.distanceKm =(featureLatLng.distanceTo(cookeLatLng)) /1000;
+                if((props.distanceKm < 400) && ((props.source["Hydro"] && props.source["Hydro"] < 500) || (props.source["Wind"] && props.source["Wind"] < 500))){
 //                    console.log(feature.properties.distanceKm);
 //                    console.log(plants);
                     return feature;
@@ -159,13 +163,17 @@
         
       
         function getRadius(val) {
-            var radius = Math.sqrt(val/Math.PI);
-//            return radius;
-            return radius * 4;   
+//            console.log(val);
+            if(val["Hydro"]){
+                var radius = Math.sqrt(val["Hydro"]/Math.PI);
+                return radius * 4.5;
+            }
+            else if(val["Wind"]){
+                var radius = Math.sqrt(val["Wind"]/Math.PI);
+                return radius * 4.5;
+            }
         } 
         
-//        console.log(distance);
-  
     </script>
     
 </body>
