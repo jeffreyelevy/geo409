@@ -144,7 +144,22 @@
 
         L.control.layers(null, sourcesLabels, { collapsed:false }).addTo(map);
         
+        var spotLight500;
+        var spotLight200;
+        
         map.on('click', function(e) {
+             if(map.hasLayer(spotLight500)) {
+//                console.log ('spotLight is present.');
+                map.removeLayer(spotLight500);
+            }
+        //EXTRA CREDIT ATTEMPT START
+        spotLight500=L.circle(e.latlng, 500000,{
+            fillColor: 'white',
+            fillOpacity: .2,
+            stroke: false
+                });
+        spotLight500.addTo(map).bringToBack(map).redraw(map);
+//EXTRA CREDIT ATTEMPT END
         for(var layer in layerInfo) { 
         geoJsonLayers[layer].eachLayer(function(layer) {
             var distance = e.latlng.distanceTo(layer.getLatLng())/1000;
@@ -168,18 +183,22 @@
             layer.bindPopup(popContent +"<br>I am <b>"+distance.toLocaleString()+ 
                                "km</b><br> from the click point.");
             }
-//EXTRA CREDIT ATTEMPT START
-        var spotLight500=L.circle(e.latlng, 500000,{
-            fillColor: 'white',
-            fillOpacity: .01,
-            stroke: false
-                });
-        spotLight500.addTo(map).bringToBack(map).redraw(map);
-//EXTRA CREDIT ATTEMPT END
+
         });
     }});
         
         map.on('dblclick', function(e) {
+            console.log('someone double-clicked!');
+            if(map.hasLayer(spotLight200)) {
+//                console.log ('spotLight is present.');
+                map.removeLayer(spotLight200)};
+        spotLight200=L.circle(e.latlng, 200000,{
+            fillColor: 'white',
+            fillOpacity: .2,
+            stroke: false
+                });
+        spotLight200.addTo(map).bringToBack(map).redraw(map);
+//EXTRA CREDIT ATTEMPT END
         for(var layer in layerInfo) { 
         geoJsonLayers[layer].eachLayer(function(layer) {
             var distance = e.latlng.distanceTo(layer.getLatLng())/1000;
@@ -192,7 +211,8 @@
                layer.setStyle({
                     stroke: true,
                     fill: true  
-               });  
+               });
+            map.redraw;    
             var popContent = "<b>"+layer.feature.properties.plant_name+"<br>Source: </b>";
             srcTemp = layer.feature.properties.source;
             for (var fuel in srcTemp){
