@@ -148,28 +148,32 @@
         var spotLight200;
         
         map.on('click', function(e) {
-             if(map.hasLayer(spotLight500)) {
+//             if(map.hasLayer(spotLight500)) {
+////                console.log ('spotLight is present.');
+//                map.removeLayer(spotLight500);
+//            }
+             if(map.hasLayer(spotLight200)) {
 //                console.log ('spotLight is present.');
-                map.removeLayer(spotLight500);
+                map.removeLayer(spotLight200);
             }
-        //EXTRA CREDIT ATTEMPT START
-        spotLight500=L.circle(e.latlng, 500000,{
-            fillColor: 'white',
-            fillOpacity: .2,
-            stroke: false
-                });
-        spotLight500.addTo(map).bringToBack(map).redraw(map);
+//EXTRA CREDIT ATTEMPT START (THIS BIT IS INTERFERING WITH DOUBLE-CLICK EVENT)
+//        spotLight500=L.circle(e.latlng, 500000,{
+//            fillColor: 'white',
+//            fillOpacity: .2,
+//            stroke: false
+//                });
+//        spotLight500.addTo(map).bringToBack(map).redraw(map);
 //EXTRA CREDIT ATTEMPT END
         for(var layer in layerInfo) { 
         geoJsonLayers[layer].eachLayer(function(layer) {
             var distance = e.latlng.distanceTo(layer.getLatLng())/1000;
-                        
             if(distance > 500) {
                 layer.setStyle({
                     stroke: false,
                     fill: false
                 });  
-            } else {
+            }
+            else {
                layer.setStyle({
                     stroke: true,
                     fill: true  
@@ -188,17 +192,19 @@
     }});
         
         map.on('dblclick', function(e) {
-            console.log('someone double-clicked!');
+//            console.log('someone double-clicked!');
+//            if(map.hasLayer(spotLight500)) {
+//                map.removeLayer(spotLight500);
+//            }
             if(map.hasLayer(spotLight200)) {
-//                console.log ('spotLight is present.');
-                map.removeLayer(spotLight200)};
+                map.removeLayer(spotLight200)
+            }
         spotLight200=L.circle(e.latlng, 200000,{
             fillColor: 'white',
             fillOpacity: .2,
             stroke: false
                 });
         spotLight200.addTo(map).bringToBack(map).redraw(map);
-//EXTRA CREDIT ATTEMPT END
         for(var layer in layerInfo) { 
         geoJsonLayers[layer].eachLayer(function(layer) {
             var distance = e.latlng.distanceTo(layer.getLatLng())/1000;
