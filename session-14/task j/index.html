@@ -97,10 +97,10 @@
 
     <div id='ui-controls'>
      <label>Choose a data attribute:<br>
-        <select name="occupied">
-            <option value="OWNED_MORT" selected>owned with mortgage</option>
-            <option value="OWNED_FREE">owned free and clear</option> 
-            <option value="RENTER">rented</option>
+        <select name="vacancies">
+            <option value="VACANT_FOR" selected>vacant units for rent</option>
+            <option value="VACANT_FO2">vacant units for sale</option> 
+            <option value="VACANT_MIG">migrant housing vacancies</option>
         </select>
         </label>
     </div>
@@ -129,13 +129,13 @@
         // Begin module 13 code here
         
         var dataLayer,
-            attribute = "OWNED_MORT",
-            norm = "OCCUPIED",
+            attribute = "VACANT_FOR",
+            norm = "VACANT",
             labels = {
-                "OCCUPIED": "occupied units",
-                "OWNED_MORT": "% occupied housing units owned with mortgage",
-                "OWNED_FREE": "% occupied housing units owned free and clear",
-                "RENTER": "% occupied housing units rented"
+                "VACANT": "total vacant units",
+                "VACANT_FOR": "% vacant units for rent",
+                "VACANT_FO2": "% vacant units for sale",
+                "VACANT_MIG": "% vacant units used for migratory workers"
             };
         
         $.getJSON("ky_counties_housing.json", function(data) {
@@ -174,6 +174,10 @@
                                 ((props[attribute]/props[norm])*100).toLocaleString());  
                 layer.on('mouseover', function(){
                     updateInfo(this);
+                    layer.setStyle({color: 'yellow', weight: 6});
+                });
+                layer.on('mouseout', function(){
+                    layer.setStyle({color: 'dddddd', weight: 2});
                 });
             });
             
@@ -181,6 +185,7 @@
             
             dataLayer.on('mouseover', function() {
                 $(".info").show();
+            
             });
             dataLayer.on('mouseout', function() {
                 $(".info").hide();    
@@ -240,7 +245,7 @@
 //            console.log(this);
 //        });
         
-        $('select[name="occupied"]').change(function() {
+        $('select[name="vacancies"]').change(function() {
 //            console.log($(this).val());
             attribute = $(this).val();
             drawMap();
@@ -270,10 +275,10 @@
         function updateInfo(layer){
             var props = layer.feature.properties;
             var html = "<h3>"+props['NAME']+" County</h3>"+
-                        "total # occupied units: <b>"+ props["OCCUPIED"] +"</b><br>"+
-                        "# owned with mortgage or loan: <b>"+ props["OWNED_MORT"]+"</b><br>"+
-                        "# owned free and clear: <b>"+ props["OWNED_FREE"]+"</b><br>"+
-                        "# occupied by renters: <b>"+ props["RENTER"]+"</b>"
+                        "total # vacant units: <b>"+ props["VACANT"] +"</b><br>"+
+                        "total # vacant units for rent: <b>"+ props["VACANT_FOR"]+"</b><br>"+
+                        "total # vacant units for sale: <b>"+ props["VACANT_FO2"]+"</b><br>"+
+                        "total # vacant units used for migratory workers: <b>"+ props["VACANT_MIG"]+"</b>"
             $(".info").html(html);
         }
         

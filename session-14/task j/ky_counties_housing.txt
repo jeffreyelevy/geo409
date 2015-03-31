@@ -14,7 +14,7 @@ These data were obtained through American Fact Finder(http://factfinder.census.g
 "VACANT_FOR" - vacant units for rent
 "VACANT_REN" - vacant units, rented not occupied
 "VACANT_FO2" - vacant units, for sale only
-"VACANT_SOL" - vacant units, sole not occupied
+"VACANT_SOL" - vacant units, sold not occupied
 "VACANT_SEA" - vacant units used seasonally or for recreational use only
 "VACANT_MIG" - vacant units used for migratory workers
 "VACANT_OTH" - vacant units, other
