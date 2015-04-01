@@ -110,12 +110,12 @@
     <footer>
         <p>Map authored by Jeff Levy</p>
         <p>Additional information about the data and map goes here.</p>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis urna magna, maximus nec laoreet sit amet, dictum ultricies nibh. Ut id auctor lacus. Nam a dolor et justo luctus luctus. Duis a elit eget risus dictum vehicula id eu elit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed sed enim nisl. Vestibulum commodo imperdiet lacus, sed facilisis erat placerat sit amet. Nulla consequat malesuada neque eget aliquet. Integer non convallis nisl, gravida ultrices ex. Fusce nec vestibulum elit. Sed elementum lectus ipsum, vulputate elementum ex laoreet a. Aenean eu ex varius, varius felis vitae, efficitur nulla. Quisque pretium laoreet ante, in sodales dui vehicula at. Mauris eu sem sapien.
-        </p>
+        <p>Kanda… Es-trada.. Montos… Ea-grets… Gat… Nos-feratos… Kanda… Amantos… Kanda...</p> <!--Don't speak the words! oops.-->
     </footer>
 
     <script>
         
+        //set initial options for map
         var options = {
             center: [38.2, -85.8],
             zoom: 7.4,
@@ -124,89 +124,102 @@
             dragging: false,
             zoomControl: false
         }
+        //create a new Leaflet map, passing map options, and assigned to variable 'map'
         var map = L.map('map', options);
         
-        // Begin module 13 code here
-        
-        var dataLayer,
-            attribute = "VACANT_FOR",
-            norm = "VACANT",
-            labels = {
+                
+        var dataLayer, //declare global variable for thematic map data
+            attribute = "VACANT_FOR", //assign initial (default) variable for thematic map attribute
+            norm = "VACANT", //assign variable to store normalizing data attribute
+            labels = { //assign variable to store labels displayed in legend instead of field names
                 "VACANT": "total vacant units",
                 "VACANT_FOR": "% vacant units for rent",
                 "VACANT_FO2": "% vacant units for sale",
                 "VACANT_MIG": "% vacant units used for migratory workers"
             };
         
+        //JQuery AJAX request to load external GeoJSON file
         $.getJSON("ky_counties_housing.json", function(data) {
-            dataLayer = L.geoJson(data, {
-                 style: function(feature) {
+            dataLayer = L.geoJson(data, { //assigns newly loaded data to global dataLayer variable
+                 style: function(feature) { //style each feature of GeoJSON layer
                     return {
-                            color: '#dddddd',
-                            weight: 2,
-                            fillOpacity: 1,
-                            fillColor: '#1f78b4'
+                            color: '#dddddd', //set stroke color to light gray
+                            weight: 2, //set stroke width
+                            fillOpacity: 1, //override default fill opacity (.2)
+                            fillColor: '#1f78b4' //set fill color (unnecessary - immediately overridden by assigning choropleth colors)
                         };
                 }          
-            }).addTo(map);
+            }).addTo(map); //add the Leaflet GeoJSON layer to the map
             
-            ui();
-            drawLegend();
-            drawMap();
-            drawInfo();
+            ui(); //call to ui function that places dropdown attribute menu within map
+            drawLegend(); //call to function that draws legend (beneath ui menu)
+            drawMap(); //call to function to draw the map
+            drawInfo(); //call to function that displays mouseover popup of raw county data
              
         });
         
         function drawMap() {
             
-            var breaks = getClassBreaks();
-
+            //call function to determine class breaks and assign return value to variable
+            var breaks = getClassBreaks(); 
+            
+            //loop through each layer of the GeoJSON layer
             dataLayer.eachLayer(function(layer) {
                 
+                //create shorthand variable to access layer properties
                 var props = layer.feature.properties;
                 
+                //change the layer's fill color using its attribute values
                 layer.setStyle({
                     fillColor: getColor(props[attribute]/
                                         props[norm], breaks)
                 });
+                //bind a popup to the layer, populated with calculated layer attribute values
                 layer.bindPopup("<b>"+props["NAME"]+" County</b></br>" +
                                 labels[attribute] + ": " +
                                 ((props[attribute]/props[norm])*100).toLocaleString());  
+                //changes stroke color and width upon mouseover
                 layer.on('mouseover', function(){
                     updateInfo(this);
                     layer.setStyle({color: 'yellow', weight: 6});
                 });
+                //changes stroke color and width back to original values upon mouseout
                 layer.on('mouseout', function(){
                     layer.setStyle({color: 'dddddd', weight: 2});
                 });
             });
             
-//            drawLegend(breaks);
-            
+            //draws info panel upon mouseover
             dataLayer.on('mouseover', function() {
                 $(".info").show();
-            
             });
+            //hides info panel upon mouseout
             dataLayer.on('mouseout', function() {
                 $(".info").hide();    
             });
+            //call function to draw the legend, sending the breaks array as argument
             updateLegend(breaks);
         }
         
         function getClassBreaks() {
             
-            var values = [];
+            var values = []; //creates empty array to hold data values
             
-            dataLayer.eachLayer(function(layer) {
-                var value = layer.feature.properties[attribute]/layer.feature.properties[norm];
-                values.push(value);   
+            dataLayer.eachLayer(function(layer) { //loop through each record in the layer
+                //calculates the normalized value of the layer's data attribute
+                var value = layer.feature.properties[attribute]/layer.feature.properties[norm]; 
+                values.push(value); //pushes the calculated value into the array
             }); 
             
+            //use Simple Statistics library to determine cutoff values for 5 classes using Jenks method and assign to variable 'breaks'
             var breaks = ss.jenks(values, 5);
-            return breaks;
+            return breaks; //returns the breaks array to caller
             
-        }   
+        }
         
+        //function accepts single normalized data attribute value and the breaks array and
+        //uses a series of conditional statements to determine which color value (or class)
+        //to return to the function caller
         function getColor(d, breaks) {
             if(d <= breaks[1]) {
                 return '#f1eef6';
@@ -222,36 +235,40 @@
         }
         
         function drawLegend(breaks) {
-            
+            //creates a new Leaflet control object assigned to variable 'legend', and positions it top left
             var legend = L.control({position: 'topleft'});
-
+            //when the legend is added to the map...
             legend.onAdd = function (map) {
+                //create a new HTML <div> element and give it a class name of 'legend', assigned to local variable 'div'
                 var div = L.DomUtil.create('div', 'legend');
+                //return the div to be added to the map
                 return div;
             };
+            //add the legend to the map
             legend.addTo(map);
         }
         
         function ui() {
+            //creates a new Leaflet control object assigned to variable 'dataView', and positions it top left
             var dataView = L.control({position: 'topleft'});
+            //when the data window is added to the map...
             dataView.onAdd = function(map) {
+                //selects the 'ui-controls' div element and assigns to local variable 'controls'
                 var controls = L.DomUtil.get('ui-controls');
-                return controls;
+                return controls; //returns the ui-control div to the Leaflet control object
             }
-            dataView.addTo(map);
+            dataView.addTo(map); //moves the ui-controls pulldown object to within the map boundaries
         }
-        
-//        $('select[name="occupied"]').change(function() {
-//            console.log(this);
-//        });
-        
+
+        //selects the DOM form 'vacancies' and executes following code when change is made to form
         $('select[name="vacancies"]').change(function() {
-//            console.log($(this).val());
+            //assigns the value from the recently chosen theme in the form options and assigns to global variable 'attribute'
             attribute = $(this).val();
-            drawMap();
+            drawMap(); //redraws the map using the new thematic attributes
         })
         
         function updateLegend(breaks) {
+            //selects the legend, supplies it with a title using the attribute *labels*, and assigns to variable legend
             var legend = $('.legend').html("<h3>" + labels[attribute] + "</h3><url>");
             for (var i = 0; i < breaks.length-1; i++){
                 var color = getColor(breaks[i+1], breaks);
