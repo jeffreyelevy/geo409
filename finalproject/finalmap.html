@@ -94,24 +94,29 @@
 //        console.log(parsedData[0]);
 //        console.log(parsedData[1][12]);
         
-        
-        var latlongs= [];
+        var larp_pts = [];
+//        var latlongs= [];
         for (var i=0; i<parsedData.length; i++){
 //            console.log(parsedData[i][i]);
-//            var cnt = [i];
-            var names = [parsedData[i][0]];
-            var latitudes = parsedData[i][1];
-            var longtitudes = parsedData[i][2];
-            var locations = L.latLng(latitudes, longtitudes);
-            var types = [parsedData[i][12]];
-            latlongs.push(locations);
-//            console.log(cnt);
+            var site = {
+                name: [parsedData[i][0]],
+                latlong: L.latLng(parsedData[i][1], parsedData[i][2]),
+                type: [parsedData[i][12]]
+            };
+            larp_pts.push(site);
         };
 //            
-            console.log(latlongs);
+//            console.log(larp_pts[5].latlong);
         
-//        
-//console.log(latlng);
+        var larpCircles = L.layerGroup();
+        
+        for (var i=0; i<larp_pts.length; i++){
+            var siteCircle = L.circle(larp_pts[i].latlong, 200);
+            siteCircle.addTo(larpCircles);
+        };
+        
+        larpCircles.addTo(map);
+
 //
 //        var circleLayer = L.geoJson(data, {
 //            pointToLayer: function (feature, latlongs) {
