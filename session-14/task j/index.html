@@ -181,11 +181,11 @@
                 //changes stroke color and width upon mouseover
                 layer.on('mouseover', function(){
                     updateInfo(this);
-                    layer.setStyle({color: 'yellow', weight: 6});
+                    layer.setStyle({color: 'yellow', weight: 6}).bringToFront();
                 });
                 //changes stroke color and width back to original values upon mouseout
                 layer.on('mouseout', function(){
-                    layer.setStyle({color: 'dddddd', weight: 2});
+                    layer.setStyle({color: '#dddddd', weight: 2, stroke:true, strokeOpacity: 1}).bringToFront();
                 });
             });
             
@@ -280,6 +280,7 @@
         }
         
         function drawInfo() {
+            //creates an info panel to hold feature attributes, which is then hidden until a mouseover event
             var info = L.control({position: 'topright'});
             info.onAdd = function(map) {
             var div = L.DomUtil.create('div', 'info');
@@ -290,6 +291,7 @@
         }
         
         function updateInfo(layer){
+            //populates the info panel with information from the feature's attributes
             var props = layer.feature.properties;
             var html = "<h3>"+props['NAME']+" County</h3>"+
                         "total # vacant units: <b>"+ props["VACANT"] +"</b><br>"+

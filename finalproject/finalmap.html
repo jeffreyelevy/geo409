@@ -111,7 +111,8 @@
         var larpCircles = L.layerGroup();
         
         for (var i=0; i<larp_pts.length; i++){
-            var siteCircle = L.circle(larp_pts[i].latlong, 200);
+            var siteCircle = L.circle(larp_pts[i].latlong, 80467.2);
+            siteCircle.bindPopup(larp_pts[i].name);
             siteCircle.addTo(larpCircles);
         };
         
