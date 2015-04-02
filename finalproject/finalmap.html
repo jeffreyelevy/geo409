@@ -89,6 +89,7 @@
 
 
         var data = larp.markers;
+        console.log(data);
         var parsedData = eval(larp.markers);
         
 //        console.log(parsedData[0]);
@@ -99,10 +100,17 @@
         for (var i=0; i<parsedData.length; i++){
 //            console.log(parsedData[i][i]);
             var site = {
-                name: [parsedData[i][0]],
+                name: parsedData[i][0],
                 latlong: L.latLng(parsedData[i][1], parsedData[i][2]),
-                type: [parsedData[i][12]]
+                theme: parsedData[i][12],
+                larpURL: parsedData[i][3],
+                larpTxt: parsedData[i][5]
             };
+            if (site.larpTxt.indexOf('boffer') >=0){
+                site.type = 'boffer'
+                }
+            else site.type = 'pen and paper';
+//            console.log(site.theme);
             larp_pts.push(site);
         };
 //            
@@ -112,10 +120,11 @@
         
         for (var i=0; i<larp_pts.length; i++){
             var siteCircle = L.circle(larp_pts[i].latlong, 80467.2);
-            siteCircle.bindPopup(larp_pts[i].name);
+            siteCircle.bindPopup(larp_pts[i].name + "<br>"+ larp_pts[i].theme +"<br>"+ larp_pts[i].type);
             siteCircle.addTo(larpCircles);
         };
         
+//        console.log(larp_pts[5].theme);
         larpCircles.addTo(map);
 
 //
