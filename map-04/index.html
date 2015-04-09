@@ -3,7 +3,7 @@
 
 <head>
     <meta charset=utf-8 />
-    <title>Module 15 Lab Template</title>
+    <title>Map 4</title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
 
     <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
@@ -68,14 +68,16 @@
         }
         
         .legend h3 {
-            padding: 10px 0px;
+            padding: 5px 0px;
             font-size: 1.1em;
             font-weight: bold;
             line-height: 1em;
             color: whitesmoke;
             margin: 0;
         }
-    
+        .legend ul {
+            padding: 0;   
+        }
         .legend li {
             list-style-type: none;
             height: 22px;
@@ -88,16 +90,63 @@
             margin-right: 10px;
         }
         
+        #ui-controls {
+            width: 176px;   
+            padding: 8px 15px 8px 15px;
+            background: rgba(75,75,75,0.8);
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            border-radius: 5px; 
+            color: whitesmoke;
+        }
+    
+        .year-slider {
+            width: 100%;
+        }
+        
+        #ui-controls .min {
+            float: left;   
+        }
+    
+        #ui-controls .max {
+            float: right;
+        }
+        
+        label {
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+        
+        .info {
+            padding: 6px 8px;
+            font-size: 1em;
+            background: rgba(255,255,255,0.8);
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            border-radius: 5px;
+            text-align: right;   
+        }
+        
+        .info h3{
+            margin: 0;
+        }
+        
+        
+        
     </style>
 </head>
 
 <body>
-    <h1>Map Title Goes Here</h1>
+    <h1>Kentucky Unemployment Rates: 2000-2013</h1>
     <div id='map'></div>
-
+    <div id="ui-controls">
+        <label><span class="min">2000</span><span class="max">2013</span>
+            <input type="range" min = "2000", max= "2013", 
+               value = "2000", step= "1", class="year-slider"></input>
+        </label>
+    </div>
+    
     <script>
         var options = {
-            center: [37.611643, -85.283475],
+            center: [37.836, -85.794],
             zoom: 7,
             minZoom: 6,
             maxZoom: 10,
@@ -123,7 +172,30 @@
             attribute = "2000"
         ;
 
+        // create a Leaflet control object and store a reference to it in a variable
+        var sliderControl = L.control({ position: 'bottomleft'} );
 
+        // when we add this control object to the map
+        sliderControl.onAdd = function(map) {
+
+            // select an existing DOM element with an id of "ui-controls"
+            var slider = L.DomUtil.get("ui-controls");
+
+                // when the user clicks on the slider element
+                L.DomEvent.addListener(slider, 'mousedown', function(e) { 
+
+                    // prevent the click event from bubbling up to the map
+                    L.DomEvent.stopPropagation(e); 
+
+                });
+
+            // return the slider from the onAdd method
+            return slider;
+        }
+
+        // add the control object containing our slider element to the map
+        sliderControl.addTo(map);
+        
         
         // AJAX requests to load data files
 
@@ -164,8 +236,10 @@
                 }
 
             }
-            drawMap(counties);
             drawLegend();
+            drawMap(counties);
+            createSliderUI();
+            drawInfo();
 
         }
 
@@ -185,6 +259,7 @@
                 }
             }).addTo(map);
             updateMap(counties);
+//            console.log(counties);
         }
 
         // function to update the map
@@ -197,7 +272,7 @@
                 layer.setStyle({
                     fillColor: getColor(props[attribute], breaks)
                 })
-                layer.bindPopup("<b>"+props["NAME"]+ " County" +"</br>" + attribute +": " +"</b>"+ props[attribute]);
+                layer.bindPopup("<b>"+props["NAME"]+ " County" +"</br>" + attribute +": " +"</b>"+ props[attribute] + "%");
                 
                 //changes stroke color and width upon mouseover
                 layer.on('mouseover', function(){
@@ -210,6 +285,16 @@
                 });               
                                 
             });
+            
+            //draws info panel upon mouseover
+            dataLayer.on('mouseover', function() {
+                $(".info").show();
+            });
+            //hides info panel upon mouseout
+            dataLayer.on('mouseout', function() {
+                $(".info").hide();    
+            });
+            
             updateLegend(breaks);
          }
 
@@ -249,6 +334,7 @@
         // function to draw the legend
 
         function drawLegend() {
+   
             //creates a new Leaflet control object assigned to variable 'legend', and positions it top left
             var legend = L.control({position: 'topright'});
             //when the legend is added to the map...
@@ -264,25 +350,65 @@
         
         // function to update the legend
         function updateLegend(breaks) {
-//            console.log(breaks);
+
+           
             //selects the legend, supplies it with a title using the attribute, and assigns to variable legend
-            var legend = $('.legend').html("<h3>" + "% Unemployment: " + attribute + "</h3><url>");
+            var legend = $('.legend').html("<h3>" + "% Unemployment: " + attribute + "</h3><ul>");
             for (var i = 0; i < breaks.length-1; i++){
                 var color = getColor(breaks[i+1], breaks);
-//                console.log(color);
-//                console.log(breaks);
-                legend.append('<li><span style="background: ' + color + '"></span> ' +
+//               console.log(color);
+//               console.log(breaks[i], color);
+               $('.legend ul').append('<li><span style="background: ' + color + '"></span> ' +
                               (breaks[i]).toLocaleString() + ' &mdash; ' +
                               (breaks[i + 1]).toLocaleString() + '</li>');
             }
             legend.append("</ul>");
         }
         
+        //function to draw the info panel
+        function drawInfo() {
+            //creates an info panel to hold feature attributes, which is then hidden until a mouseover event
+            var info = L.control({position: 'bottomright'});
+            info.onAdd = function(map) {
+            var div = L.DomUtil.create('div', 'info');
+            return div;  
+            }
+        info.addTo(map);
+        $(".info").hide();
+        }
 
         //function to update the info panel
 
         function updateInfo(layer){
+            //populates the info panel with information from the feature's attributes
+            var props = layer.feature.properties;
+            var html = "<h3>"+props['NAME']+" County</h3>"+
+                        "2000: <b>"+ props["2000"] +"</b><br>"+
+                        "2001: <b>"+ props["2001"] +"</b><br>"+
+                        "2002: <b>"+ props["2002"] +"</b><br>"+
+                        "2003: <b>"+ props["2003"] +"</b><br>"+
+                        "2004: <b>"+ props["2004"] +"</b><br>"+
+                        "2005: <b>"+ props["2005"] +"</b><br>"+
+                        "2006: <b>"+ props["2006"] +"</b><br>"+
+                        "2007: <b>"+ props["2007"] +"</b><br>"+
+                        "2008: <b>"+ props["2008"] +"</b><br>"+
+                        "2009: <b>"+ props["2009"] +"</b><br>"+
+                        "2010: <b>"+ props["2010"] +"</b><br>"+
+                        "2011: <b>"+ props["2011"] +"</b><br>"+
+                        "2012: <b>"+ props["2012"] +"</b><br>"+
+                        "2013: <b>"+ props["2013"] +"</b><br>"
+            $(".info").html(html);
         }
+        
+        //function to createSliderUI
+        function createSliderUI(){
+            $(".year-slider")
+                .on('input change', function() {
+                    attribute = $(this).val();
+                    updateMap();
+                });    
+        }
+        
 
      </script>
 
