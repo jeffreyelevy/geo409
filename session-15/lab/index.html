@@ -8,7 +8,7 @@
 
     <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
     <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.1.0/papaparse.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.1.0/papaparse.min.js"></script>
     <script src="simple_statistics.js"></script>
 
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
@@ -22,9 +22,11 @@
             font-family: Lato, sans-serif;
             color: #0D0000;
         }
+        
         header {
             padding: 6px 10%;
         }
+        
         h1 {
             position: absolute;
             z-index: 100;
@@ -34,32 +36,34 @@
             margin: 0;
             color: whitesmoke;
             font-size: 1.5em;
-            background: rgba(25,25,25,0.8);
-            border-radius: 5px; 
+            background: rgba(25, 25, 25, 0.8);
+            border-radius: 5px;
         }
+        
         #map {
             position: absolute;
             width: 100%;
             top: 0;
             bottom: 0;
         }
+        
         footer {
             padding: 6px 10%;
             width: 80%;
         }
+        
         p {
             font-size: 1em;
             color: #001323;
-        }   
+        }
     </style>
 </head>
 
 <body>
     <h1>Map Title Goes Here</h1>
     <div id='map'></div>
-    
+
     <script>
-        
         var options = {
             center: [38.2, -94],
             zoom: 4,
@@ -69,73 +73,75 @@
             zoomControl: true
         }
         var map = L.map('map', options);
-        
+
         // load map tiles and add to map
 
         var tiles = L.tileLayer('http://{s}.tile.stamen.com/toner-background/{z}/{x}/{y}.{ext}', {
-	       attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-	       subdomains: 'abcd',
-	       minZoom: 0,
-	       maxZoom: 20,
-	       ext: 'png'
+            attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+            subdomains: 'abcd',
+            minZoom: 0,
+            maxZoom: 20,
+            ext: 'png'
         });
         map.addLayer(tiles);
-        
+
         // declare global variables
         
+        var dataLayer,
+            attribute = "2001"
+        ;
 
-        
         // AJAX requests to load data files
-        
-        $.getJSON("us-states.json", function(states) {
+
+        $.getJSON("us-states.json", function (states) {
 
             Papa.parse('states-unemployment.csv', {
                 download: true,
                 header: true,
-                complete: function(data) {
+                complete: function (data) {
 
                     // data is accessible to us here
-//                    console.log(data);
+                    //                    console.log(data);
                     processData(states, data);
                     // note that states is also accessible here!
 
                 }
             }); // end of Papa.parse() 
 
-        }).fail(function() {
+        }).fail(function () {
             // the data file failed to load
-            console.log("Ruh roh! An error has occurred." );
-        });  // end of $.getJSON()        
-        
+            console.log("Ruh roh! An error has occurred.");
+        }); // end of $.getJSON()        
+
         // function to process/bind data
-        
-        function processData(states, data){
+
+        function processData(states, data) {
             for (var state in states.features) {
 
                 var props = states.features[state].properties;
 
-//                console.log(props.StateFP);
+                //                console.log(props.StateFP);
 
-                for(var d in data.data) {
-                    if(props.STATEFP == data.data[d].STATE_FIP) {
-                        states.features[state].properties = data.data[d]; 
-                    break;
+                for (var d in data.data) {
+                    if (props.STATEFP == data.data[d].STATE_FIP) {
+                        states.features[state].properties = data.data[d];
+                        break;
                     }
-//                console.log(data.data[d].STATE_FIP);
+                    //                console.log(data.data[d].STATE_FIP);
                 }
-                
+
             }
             drawMap(states);
-//            console.log(states);
+            //            console.log(states);
         }
-        
 
-        
+
+
         // function to draw the map
-        
-        function drawMap(states){
+
+        function drawMap(states) {
             dataLayer = L.geoJson(states, {
-                style: function(feature){
+                style: function (feature) {
                     return {
                         color: '#dddddd',
                         weight: 2,
@@ -146,25 +152,41 @@
             }).addTo(map);
             updateMap(states);
         }
-        
+
         // function to update the map
+
+        function updateMap(states) {
+            var breaks = getClassBreaks();
+            dataLayer.eachLayer(function(layer) {
+                var props = layer.feature.properties;
+                layer.setStyle({
+                    fillColor: getColor(props[attribute], breaks)
+                })
+                layer.bindPopup("<b>"+props["State_Name"]+"</b></br>" + attribute + ": " + props[attribute]);
+            });
+        }
+
+        // function get the class breaks
         
-        function updateMap(states){
+        function getClassBreaks(){
             
         }
-        
-        // function get the class breaks   
-        
+
         // function to get the color value
-                
-        // function to draw the legend
         
+        function getColor (a, breaks){
+            
+        };
+
+        // function to draw the legend
+
         // function to update the legend
 
         // function to create the range slider
+        
 
     </script>
-    
+
 </body>
 
 </html>
